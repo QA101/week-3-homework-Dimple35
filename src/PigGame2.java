@@ -1,27 +1,20 @@
-import java.util.*;
 import java.util.Random;
 import java.util.Scanner;
-
-public class PigGame2 {
-
-	
+public class PigGame2
+{
+	// This game is played by 2 to 4 players. Each player rolls the die and the player who gets  
+	// the highest score wins. If a player rolls a 1, this is not added to the total score 
+	// and the play passes to the next player. 
 	public static void main(String[] args) 
 	{
-		// 
 		boolean playing = true;
 		int player = 1;
 		int total = 0;
-		Character command= ' ';
-		
-		//---------------------------------------
+		String command= " ";
 		Scanner keyboard = new Scanner(System.in);
 		System.out.println("How many players?(2-4)");
 		int numberPlayer = keyboard.nextInt();
 		int [] list = new int [numberPlayer];
-		//
-		for (int i=0; i< numberPlayer; i++) 
-			list[i] = 0;
-		//
 		if (numberPlayer > 4 || numberPlayer < 2) 
 		{
 			System.out.println("You should enter between 2 and 4");
@@ -30,77 +23,79 @@ public class PigGame2 {
 		while (playing == true)
 		{
 			System.out.println("Player-"+player+"'s Turn");
-			System.out.println("Enter <Q> for QUIT, <R> for ROLL, <H> for HOLD, <P> for PRINT the score");
-			command= keyboard.next().charAt(0); 
-			//----------------------------
-			if (command.equals('Q'))
+			System.out.println();
+			System.out.println("Enter <QUIT>, <ROLL>, <HOLD> or <PRINT>");
+			command= keyboard.next().toUpperCase(); 
+// Q ends the game 
+			if (command.equals("QUIT"))
 			{
 				playing = false;
 
 			}
-			//----------------------------
-			if (command.equals('H'))
+// Next player's turn
+			if (command.equals("HOLD"))
 			{
-				if (player < numberPlayer) {
+				if (player < numberPlayer)
+				{
 					player++;
-					
 				}
 				else
 				{
 					player = 1;
-					
-					
 				}
-				total = list[player-1];
+				total = list[player-1]; 
 			}
-			//----------------------------
-			if (command.equals('P'))
+// Print the current player's score
+			if (command.equals("PRINT"))
 			{
-				System.out.println("Your total score is "+total);;
-				
-
+				System.out.println("*---------------------*");
+				System.out.println("Your total score is "+total);
+				System.out.println("*---------------------*");
 			}
-			//----------------------------
-			if (command.equals('R'))
+// Roll the die 
+			if (command.equals("ROLL"))
 			{
-				
 				int dieNum=rollD(player);
-				
-				total= total +dieNum;
-					
-				if (total > 100){
-
-					playing = false;
-					System.out.println("Your score:"+total);
-					System.out.println("You are the WINNER!");
-					System.out.println("GAME OVER");
-					command=' ';
-
+				System.out.println("Your number is "+dieNum);
+				if (dieNum!=1) 
+				{
+					total= total +dieNum;
+					if (total > 100)
+					{
+						playing = false;
+						System.out.println("Your score:"+total);
+						System.out.println("You are the WINNER!");
+						System.out.println("GAME OVER");
+						command=" ";
+					}
+					else
+					{
+						list[player-1] = total;
+						System.out.println("Your score:"+total);
+					}
 				}
 				else
 				{
-					list[player-1] = total;
-					System.out.println("Your score:"+total);
-					
+					if (player < numberPlayer)
+					{
+						player++;
+					}
+					else
+					{
+						player = 1;
+					}
+					total = list[player-1];
 				}
-
 			}
-			
-			//
-			
 		}
 		keyboard.close();
 	}
-		public static int rollD(int p) {
-			Random rand = new Random();
-			int die	=rand.nextInt(6)+1;
-			System.out.println("Your number is "+die);
-		return die;
-		}
-		
-		
-
-		
-	
-
+// rollD method is used to roll a die, it generates a number between 1 and 6	
+	public static int rollD(int p) 
+	{
+		Random rand = new Random();
+		int die	=rand.nextInt(6)+1;
+	return die;
+	}
 }
+
